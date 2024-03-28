@@ -1,0 +1,76 @@
+{
+  "name": "npm-template",
+  "version": "1.1.1",
+  "description": "A template repo for npm packages",
+  "keywords": [],
+  "type": "module",
+  "main": "./cjs/index.cjs",
+  "module": "./index.js",
+  "unpkg": "./index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./cjs/index.cjs"
+    },
+    "./*.js": {
+      "import": "./*.js",
+      "require": "./cjs/*.cjs"
+    },
+    "./*.mjs": {
+      "import": "./*.js",
+      "require": "./cjs/*.cjs"
+    },
+    "./*.cjs": {
+      "import": "./*.js",
+      "require": "./cjs/*.cjs"
+    },
+    "./*": {
+      "import": "./*.js",
+      "require": "./cjs/*.cjs"
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "private": false,
+  "scripts": {
+    "test": "npm run lint:js && npm run build",
+    "preversion": "npm test",
+    "prepare": "npm run build",
+    "lint:js": "eslint .",
+    "fix:js": "eslint . --fix",
+    "build": "npm run build:js",
+    "clean": "rm -f ./cjs/*.cjs",
+    "build:js": "npm run clean && rollup -c rollup.config.js",
+    "create:lock": "npm i --package-lock-only --ignore-scripts --no-audit --no-fund",
+    "version:bump": "npm run version:bump:patch",
+    "version:bump:patch": "npm version --no-git-tag-version patch && npm run create:lock",
+    "version:bump:minor": "npm version --no-git-tag-version minor && npm run create:lock",
+    "version:bump:major": "npm version --no-git-tag-version major && npm run create:lock"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shgysk8zer0/npm-template.git"
+  },
+  "author": "Chris Zuber <admin@kernvalley.us>",
+  "license": "MIT",
+  "funding": [
+    {
+      "type": "librepay",
+      "url": "https://liberapay.com/shgysk8zer0"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/shgysk8zer0"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/shgysk8zer0/npm-template/issues"
+  },
+  "homepage": "https://github.com/shgysk8zer0/npm-template#readme",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@shgysk8zer0/js-utils": "^1.0.1",
+    "@shgysk8zer0/npm-utils": "^1.1.2"
+  }
+}

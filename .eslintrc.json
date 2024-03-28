@@ -1,0 +1,37 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 2022
+    },
+    "plugins": [],
+    "rules": {
+        "indent": [
+            2,
+            "tab",
+            {
+              "SwitchCase": 1
+            }
+        ],
+        "quotes": [
+            2,
+            "single"
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        "no-console": 0,
+        "no-async-promise-executor": 0,
+        "no-prototype-builtins": 0
+    },
+    "globals": {
+      "globalThis": "readonly"
+    }
+}
+
