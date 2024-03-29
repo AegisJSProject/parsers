@@ -14,6 +14,5 @@ importmap.yaml
 *.tgz
 *.log
 *.bak
-*.min.*
-*.map
 *.env
+
