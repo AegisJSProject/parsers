@@ -31,7 +31,8 @@
         "no-prototype-builtins": 0
     },
     "globals": {
-      "globalThis": "readonly"
+      "globalThis": "readonly",
+      "MathMLElement": "readonly"
     }
 }
 

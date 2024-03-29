@@ -8,6 +8,7 @@ export default [{
 		'@aegisjsproject/sanitizer/config/svg.js',
 		'@aegisjsproject/sanitizer/config/mathml.js',
 		'@aegisjsproject/sanitizer/config/base.js',
+		'@aegisjsproject/sanitizer/namespaces.js',
 	],
 	output: {
 		file: 'parsers.cjs',
