@@ -1,19 +1,25 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import { warningHandler } from '@shgysk8zer0/js-utils/rollup';
-import { listDirByExt } from '@shgysk8zer0/npm-utils/fs';
+import terser from '@rollup/plugin-terser';
+import nodeResolve from '@rollup/plugin-node-resolve';
 
-const modules = await listDirByExt('./', '.js');
-
-export default {
-	input: modules.filter(module => ! module.endsWith('.config.js')),
-	external: [],
-	onwarn: warningHandler,
+export default [{
+	input: 'parsers.js',
+	external: [
+		'@aegisjsproject/sanitizer/config/html.js',
+		'@aegisjsproject/sanitizer/config/svg.js',
+		'@aegisjsproject/sanitizer/config/mathml.js',
+		'@aegisjsproject/sanitizer/config/base.js',
+	],
 	output: {
-		dir: './cjs/',
+		file: 'parsers.cjs',
 		format: 'cjs',
-		preserveModules: true,
-		entryFileNames: '[name].cjs',
-		chunkFileNames: '[name]-[hash].cjs',
 	},
+}, {
+	input: 'bundle.js',
 	plugins: [nodeResolve()],
-};
+	output: {
+		file: 'bundle.min.js',
+		format: 'module',
+		plugins: [terser()],
+		sourcemap: true,
+	}
+}];
