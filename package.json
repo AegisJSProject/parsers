@@ -1,46 +1,59 @@
 {
-  "name": "npm-template",
-  "version": "1.1.1",
-  "description": "A template repo for npm packages",
-  "keywords": [],
+  "name": "@aegisjsproject/parsers",
+  "version": "0.0.1",
+  "description": "A collection of secure & minimal parsers for HTML, CSS, SVG, MathML, XML, and JSON",
+  "keywords": [
+    "aegis",
+    "tagged-template-literals",
+    "sanitizer",
+    "sanitizer-api"
+  ],
   "type": "module",
-  "main": "./cjs/index.cjs",
-  "module": "./index.js",
-  "unpkg": "./index.js",
+  "main": "./parsers.cjs",
+  "module": "./parsers.js",
+  "unpkg": "./bundle.min.js",
   "exports": {
     ".": {
-      "import": "./index.js",
-      "require": "./cjs/index.cjs"
+      "import": "./parsers.js",
+      "require": "./parsers.cjs"
     },
     "./*.js": {
       "import": "./*.js",
-      "require": "./cjs/*.cjs"
+      "require": "./*.cjs"
     },
     "./*.mjs": {
       "import": "./*.js",
-      "require": "./cjs/*.cjs"
+      "require": "./*.cjs"
     },
     "./*.cjs": {
       "import": "./*.js",
-      "require": "./cjs/*.cjs"
+      "require": "./*.cjs"
     },
     "./*": {
       "import": "./*.js",
-      "require": "./cjs/*.cjs"
+      "require": "./*.cjs"
     }
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "private": false,
+  "config": {
+    "serve": {
+      "domain": "localhost",
+      "path": "./",
+      "port": 8080
+    }
+  },
   "scripts": {
     "test": "npm run lint:js && npm run build",
+    "start": "http-server ${npm_package_config_serve_path} -c-1 --port ${npm_package_config_serve_port} --gzip true --brotli true -a ${npm_package_config_serve_domain} -o /test/",
     "preversion": "npm test",
     "prepare": "npm run build",
     "lint:js": "eslint .",
     "fix:js": "eslint . --fix",
     "build": "npm run build:js",
-    "clean": "rm -f ./cjs/*.cjs",
+    "clean": "rm -f *.cjs *.mjs  *.map",
     "build:js": "npm run clean && rollup -c rollup.config.js",
     "create:lock": "npm i --package-lock-only --ignore-scripts --no-audit --no-fund",
     "version:bump": "npm run version:bump:patch",
@@ -50,7 +63,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shgysk8zer0/npm-template.git"
+    "url": "git+https://github.com/AegisJSProject/parsers.git"
   },
   "author": "Chris Zuber <admin@kernvalley.us>",
   "license": "MIT",
@@ -65,12 +78,17 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/shgysk8zer0/npm-template/issues"
+    "url": "https://github.com/./issues"
   },
-  "homepage": "https://github.com/shgysk8zer0/npm-template#readme",
+  "homepage": "https://github.com/AegisJSProject/parsers#readme",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@shgysk8zer0/js-utils": "^1.0.1",
-    "@shgysk8zer0/npm-utils": "^1.1.2"
+    "@rollup/plugin-terser": "^0.4.4",
+    "eslint": "^8.57.0",
+    "http-server": "^14.1.1",
+    "rollup": "^4.13.1"
+  },
+  "dependencies": {
+    "@aegisjsproject/sanitizer": "^0.0.7"
   }
 }
