@@ -72,6 +72,28 @@ document.adoptedStyleSheets = [css`
 `];
 ```
 
+## Web Component Example
+
+```js
+import { template } from './template.js';
+import { base, dark, light } from './theme.js';
+import { btnStyles, cardStyles } from './styles.js';
+
+class MyComponent extends HTMLElement {
+  #shadow;
+
+  constructor() {
+    super();
+
+    this.#shadow = this.attachShadow({ mode: 'closed' });
+    this.#shadow.append(template);
+    this.#shadow.adoptedStyleSheets = [base, dark, light btnStyles, cardStyes];
+  }
+}
+
+customElements.define('my-component', MyComponent);
+```
+
 > [!WARNING]
 > The Sanitizer API is still being developed, and could change. Until the API
 > is stable, this project will remain pre-v1.0.0

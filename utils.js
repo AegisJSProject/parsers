@@ -11,7 +11,7 @@ export function stringify(thing) {
 			return thing;
 
 		case 'function':
-			throw new TypeError('Functions are not allowed.');
+			throw new TypeError('Functions are not supported.');
 
 		case 'object':
 			if (thing === null) {

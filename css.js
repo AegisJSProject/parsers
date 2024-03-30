@@ -31,3 +31,19 @@ export function styleSheetToLink(sheet, { crossOrigin = 'anonymous', referrerPol
 	link.href = URL.createObjectURL(file);
 	return link;
 }
+
+export function setStyleSheets(node, ...styles) {
+	if (node instanceof HTMLDocument || node instanceof ShadowRoot) {
+		node.adoptedStyleSheets = styles;
+	} else {
+		throw new TypeError('Node must be a `HTMLDocument` or `ShadowRoot`.');
+	}
+}
+
+export function addStyleSheets(node, ...styles) {
+	if (node instanceof Document || node instanceof ShadowRoot) {
+		node.adoptedStyleSheets = [...node.adoptedStyleSheets, ...styles];
+	} else {
+		throw new TypeError('Node must be a `HTMLDocument` or `ShadowRoot`.');
+	}
+}
