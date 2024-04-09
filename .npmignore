@@ -7,6 +7,8 @@ node_modules/
 .gitattributes
 .gitignore
 .nvmrc
+.stylelintrc
+.stylelintignore
 importmap.json
 importmap.yaml
 *.config.js

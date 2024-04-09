@@ -23,16 +23,32 @@ on:
     branches:
       - master
       - release/*
+    paths-ignore:
+      - '**/*.js' # Disable since ESLint is used and v9 config is incompatible
+      - '**/*.mjs'
+      - '**/*.cjs'
+      - '**/*.min.js'
 
 ###############
 # Set the Job #
 ###############
 jobs:
   build:
+    strategy:
+      fail-fast: false
+      # matrix:
+      #   language:
     # Name the Job
     name: Lint Code Base
     # Set the agent to run on
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
+
 
     ##################
     # Load all steps #
@@ -43,21 +59,46 @@ jobs:
       ##########################
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
 
       ################################
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: docker://github/super-linter:v4
+        uses: super-linter/super-linter@v6.3.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_ALL_CODEBASE: true
-          DEFAULT_BRANCH: master
-          VALIDATE_YAML: true
-          VALIDATE_JSON: true
+          # DEFAULT_BRANCH: master
+          # DEFAULT_WORKSPACE:
+          # ANSIBLE_DIRECTORY:
+          # ACTIONS_RUNNER_DEBUG: true
+          VALIDATE_ALL_CODEBASE: false
+          IGNORE_GENERATED_FILES: true
+          IGNORE_GITIGNORED_FILES: true
+          SUPPRESS_POSSUM: true
+          LOG_LEVEL: ERROR
+          LINTER_RULES_PATH: './'
+          EDITORCONFIG_FILE_NAME: '.editorconfig'
+          # JAVASCRIPT_ES_CONFIG_FILE: 'eslint.config.js'
+          CSS_FILE_NAME: '.stylelintrc.json'
+
+          # Valate Languages - Uncomment to Enable
+          # JS/TS/JSON Disabled until ESLint in super-linter is updated
+          VALIDATE_HTML: true
+          VALIDATE_CSS: true
+          # VALIDATE_JAVASCRIPT_ES: true
+          # VALIDATE_JAVASCRIPT_STANDARD: true
+          # VALIDATE_JSON: true
           # VALIDATE_XML: true
-          VALIDATE_MD: true
-          # VALIDATE_HTML: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_YAML: true
+          # VALIDATE_TYPESCRIPT_ES: true
+          # VALIDATE_TYPESCRIPT_STANDARD: true
+          # VALIDATE_JSX: true
+          # VALIDATE_TSX: true
           # VALIDATE_BASH: true
           # VALIDATE_PERL: true
           # VALIDATE_PHP_BUILTIN: true
@@ -65,14 +106,6 @@ jobs:
           # VALIDATE_RUBY: true
           # VALIDATE_COFFEE: true
           # VALIDATE_ANSIBLE: true
-          # VALIDATE_JAVASCRIPT_ES: true
-          # VALIDATE_JAVASCRIPT_STANDARD: true
-          # VALIDATE_TYPESCRIPT_ES: true
-          # VALIDATE_TYPESCRIPT_STANDARD: true
           # VALIDATE_DOCKER: true
           # VALIDATE_GO: true
           # VALIDATE_TERRAFORM: true
-          # VALIDATE_CSS: true
-          # ANSIBLE_DIRECTORY:
-          # ACTIONS_RUNNER_DEBUG: true
-          # DEFAULT_WORKSPACE:
