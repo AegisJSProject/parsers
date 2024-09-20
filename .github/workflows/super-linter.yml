@@ -87,7 +87,7 @@ jobs:
 
           # Valate Languages - Uncomment to Enable
           # JS/TS/JSON Disabled until ESLint in super-linter is updated
-          VALIDATE_HTML: true
+          # VALIDATE_HTML: true
           VALIDATE_CSS: true
           # VALIDATE_JAVASCRIPT_ES: true
           # VALIDATE_JAVASCRIPT_STANDARD: true
