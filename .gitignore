@@ -5,6 +5,7 @@
 *.gz
 *.tgz
 .env
+.DS_STORE
 # Logs
 logs
 *.log
