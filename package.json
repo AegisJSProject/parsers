@@ -1,6 +1,6 @@
 {
   "name": "@aegisjsproject/parsers",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A collection of secure & minimal parsers for HTML, CSS, SVG, MathML, XML, and JSON",
   "keywords": [
     "aegis",
@@ -90,6 +90,6 @@
     "rollup": "^4.13.1"
   },
   "dependencies": {
-    "@aegisjsproject/sanitizer": "^0.1.1"
+    "@aegisjsproject/sanitizer": "^0.1.2"
   }
 }
