@@ -1,4 +1,4 @@
-import { createHTMLParser, css, svg, completeConfig as sanitizer } from '@aegisjsproject/parsers';
+import { createHTMLParser, css, svg, completeConfig as sanitizer } from '../bundle.js';
 
 const html = createHTMLParser(sanitizer);
 const file = new File(['Thanks for downloading my file :)'], 'thanks.txt', { type: 'text/plain' });

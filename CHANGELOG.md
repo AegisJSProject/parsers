@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.0.10] - 2024-09-25
+
+### Added
+- Add `url` parser
+- Add new types supported in `stringify`
+
+### Fixed
+- Fix infinite recursion in config via update to `@aegisjsproject/sanitizer`
+
 ## [v0.0.9] - 2024-09-19
 
 ### Changed
