@@ -7,7 +7,8 @@
 		<meta http-equiv="Content-Security-Policy"
 			content="default-src 'none';
 			script-src 'self' https://unpkg.com/@shgysk8zer0/ https://unpkg.com/@aegisjsproject/ 'sha384-kLwKc1h2n3rxgHAQorvtkYZGT+zfan1+nzl0xYlGL0uR6tweMM5ZrOFt3O1nwUtx';
-			style-src blob:;
+			style-src 'self' blob:;
+			img-src 'self' blob:;
 			connect-src 'none';
 			trusted-types empty#html empty#script aegis-sanitizer#html default;
 			require-trusted-types-for 'script';" />
@@ -20,6 +21,7 @@
 				}
 			}
 		</script>
+		<script type="module" defer="" referrerpolicy="no-referrer" crossorigin="anonymous" integrity="sha384-LKWrm336s4/gu00z/eKsqTL+2XNm/OMDwX0jtCXgIiF7zQuTD7WlFrDPkNpGx3Iq" src="https://unpkg.com/@shgysk8zer0/polyfills@0.4.2/array.js" fetchpriority="auto"></script>
 		<script type="module" referrerpolicy="no-referrer" src="./index.js"></script>
 	</head>
 	<body></body>

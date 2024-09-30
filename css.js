@@ -1,16 +1,49 @@
+const stringify = thing => {
+	switch(typeof thing) {
+		case 'undefined':
+			return '';
+
+		case 'boolean':
+			return thing ? 'true' : 'false';
+
+		case 'object':
+			if (thing === null) {
+				return '';
+			} else if (thing instanceof CSSStyleSheet) {
+				return [...thing.cssRules].map(rule => rule.cssText).join('\n\n');
+			} else if (thing instanceof CSSRule) {
+				return thing.cssText;
+			} else if (thing instanceof HTMLLinkElement) {
+				return stringify(thing.sheet);
+			} else if (thing instanceof ArrayBuffer && Uint8Array.prototype.toBase64 instanceof Function) {
+				return new Uint8Array(thing).toBase64();
+			} else if (ArrayBuffer.isView(thing) && thing.toBase64 instanceof Function) {
+				return thing.toBase64();
+			} else if (thing instanceof Blob) {
+				return URL.createObjectURL(thing);
+			} else {
+				return thing.toString();
+			}
+
+		default:
+			return thing.toString();
+	}
+};
+
 export function createStyleSheet(cssRules, { media, disabled, baseURL } = {}) {
+	console.log(cssRules);
 	const sheet = new CSSStyleSheet({
 		media: media instanceof MediaQueryList ? media.media : media,
 		disabled,
 		baseURL
 	});
 
-	sheet.replaceSync(cssRules);
+	sheet.replace(cssRules).catch(console.error);
 	return sheet;
 }
 
-export const createCSSParser = ({ media, disabled, baseURL } = {}) => (...args) => {
-	return createStyleSheet(String.raw.apply(null, args).trim(), { media, disabled, baseURL });
+export const createCSSParser = ({ media, disabled, baseURL } = {}) => (strings, ...args) => {
+	return createStyleSheet(String.raw(strings, ...args.map(stringify)).trim(), { media, disabled, baseURL });
 };
 
 export const css = createCSSParser();

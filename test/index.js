@@ -2,14 +2,29 @@ import { createHTMLParser, css, svg, completeConfig as sanitizer } from '../bund
 
 const html = createHTMLParser(sanitizer);
 const file = new File(['Thanks for downloading my file :)'], 'thanks.txt', { type: 'text/plain' });
+const styles = await new CSSStyleSheet().replace('#header { display: none; }');
 
 const icon = svg`<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" role="presentation" aria-label="Close Popover">
 	<path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/>
 </svg>`;
 
-document.adoptedStyleSheets [css`:root {
+const bg = new Blob([`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">
+	<rect fill="#${crypto.getRandomValues(new Uint8Array(3)).toHex()}" x="0" y="0" width="10" height="10" rx="1" ry="1"></rect>
+</svg>`], { type: 'image/svg+xml' });
+
+document.adoptedStyleSheets = [css`:root {
 	font-family: system-ui;
+	}
+
+body {
+	background-image: url(${bg});
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	min-height: 100dvh;
 }
+
+${styles.cssRules.item(0)}
 
 #nav {
 	display: flex;
@@ -36,7 +51,8 @@ document.body.append(html`<style>
 	<a href="javascript:alert('javascript:')"><code>javascript:</code> Link</a>
 	<a href="data:text/plain,Not%20Allowed" target="_blank"><code>data:</code> Link</a>
 	<a href="file:${import.meta.url}"><code>file:</code> Link</a>
-	<a href="${URL.createObjectURL(file)}" download="${file.name}" target="_blank"><code>blob:</code> Download Link</a>
+	<a href="${file}" download="${file.name}" target="_blank"><code>blob:</code> Download Link</a>
+	<span>${await file.bytes()}</span>
 </nav>
 <main id="main"></main>
 <div popover="auto" id="bacon">
