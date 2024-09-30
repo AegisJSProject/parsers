@@ -33,6 +33,8 @@ export function stringify(thing) {
 				return new Uint8Array(thing).toBase64();
 			} else if (ArrayBuffer.isView(thing) && thing.toBase64 instanceof Function) {
 				return thing.toBase64();
+			} else if (thing instanceof Blob) {
+				return URL.createObjectURL(thing);
 			} else {
 				return thing.toString();
 			}

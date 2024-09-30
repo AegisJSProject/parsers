@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.0.11] - 2024-09-29
+
+### Added
+- Custom `stringy` for CSS (including `blob:` URIs for `File`s & `Blob`s)
+
+### Changed
+- CSS parser now uses `replace` instead of `replaceSync` (still works synchronously)
+
 ## [v0.0.10] - 2024-09-25
 
 ### Added
