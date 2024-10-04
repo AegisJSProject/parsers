@@ -31,7 +31,6 @@ const stringify = thing => {
 };
 
 export function createStyleSheet(cssRules, { media, disabled, baseURL } = {}) {
-	console.log(cssRules);
 	const sheet = new CSSStyleSheet({
 		media: media instanceof MediaQueryList ? media.media : media,
 		disabled,
