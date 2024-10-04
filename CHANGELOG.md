@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.0.12] - 2024-10-04
+
+### Fixed
+- Remove `console.log` that was left in for `css`
+
 ## [v0.0.11] - 2024-09-29
 
 ### Added
