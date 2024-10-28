@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Use external `@aegijsproject/url` instead of own URL parser
+
+### Fixed
+- Cleanup unneeded files from published package
+
 ## [v0.0.12] - 2024-10-04
 
 ### Fixed
