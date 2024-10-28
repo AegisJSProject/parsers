@@ -1,4 +1,5 @@
 node_modules/
+test/
 .github/
 .editorconfig
 .eslintignore
@@ -8,6 +9,7 @@ node_modules/
 .gitignore
 .nvmrc
 .stylelintrc
+.htmlhint
 .stylelintignore
 importmap.json
 importmap.yaml
