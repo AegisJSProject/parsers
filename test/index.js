@@ -56,13 +56,15 @@ document.body.append(html`<style>
 </nav>
 <main id="main"></main>
 <div popover="auto" id="bacon">
-	<div>
+	<template shadowrootmode="open">
+		<slot name="close">x</slot>
 		<b>Bacon Ipsum</b>
-		<button type="button" popovertarget="bacon" popovertargetaction="hide">
-			${icon}
-		</button>
-	</div>
-	<p>Bacon ipsum dolor amet pork belly frankfurter drumstick jowl brisket capicola short ribs. Cow chislic ham hock t-bone shoulder salami rump corned beef spare ribs prosciutto bresaola picanha drumstick. Swine tail pork belly ribeye beef kielbasa. Beef cupim ball tip pastrami spare ribs strip steak tongue salami venison. Venison cupim meatball strip steak meatloaf prosciutto buffalo frankfurter hamburger flank boudin.</p>
+		<slot name="content">No Content</slot>
+	</template>
+	<button type="button" popovertarget="bacon" popovertargetaction="hide" slot="close">
+		${icon}
+	</button>
+	<p slot="content">Bacon ipsum dolor amet pork belly frankfurter drumstick jowl brisket capicola short ribs. Cow chislic ham hock t-bone shoulder salami rump corned beef spare ribs prosciutto bresaola picanha drumstick. Swine tail pork belly ribeye beef kielbasa. Beef cupim ball tip pastrami spare ribs strip steak tongue salami venison. Venison cupim meatball strip steak meatloaf prosciutto buffalo frankfurter hamburger flank boudin.</p>
 </div>
 
 <div popover="auto" id="math">

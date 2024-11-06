@@ -1,6 +1,6 @@
 {
   "name": "@aegisjsproject/parsers",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "A collection of secure & minimal parsers for HTML, CSS, SVG, MathML, XML, and JSON",
   "keywords": [
     "aegis",
@@ -11,7 +11,7 @@
   "type": "module",
   "main": "./parsers.cjs",
   "module": "./parsers.js",
-  "unpkg": "./bundle.min.js",
+  "unpkg": "./bundle.js",
   "exports": {
     ".": {
       "import": "./parsers.js",
@@ -90,7 +90,7 @@
     "rollup": "^4.13.1"
   },
   "dependencies": {
-    "@aegisjsproject/sanitizer": "^0.1.2",
+    "@aegisjsproject/sanitizer": "^0.1.3",
     "@aegisjsproject/url": "^1.0.0"
   }
 }

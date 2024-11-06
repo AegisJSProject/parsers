@@ -1,1 +1,1 @@
-export { escape, url } from '@aegisjsproject/url';
+export { escape, url } from '@aegisjsproject/url/url.js';
