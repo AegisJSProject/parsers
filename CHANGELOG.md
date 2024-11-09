@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.0.15] - 2024-11-09
+
+### Added
+- Add unsafe versions of `html` and `doc` using `setHTMLUnsafe` and `parseHTMLUnsafe`
+
 ## [v0.0.14] - 2024-11-06
 
 ### Changed

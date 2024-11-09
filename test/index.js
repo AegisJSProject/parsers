@@ -56,10 +56,12 @@ document.body.append(html`<style>
 </nav>
 <main id="main"></main>
 <div popover="auto" id="bacon">
-	<template shadowrootmode="open">
-		<slot name="close">x</slot>
-		<b>Bacon Ipsum</b>
-		<slot name="content">No Content</slot>
+	<template shadowrootmode="open" shadowrootserializable="">
+		<div part="container">
+			<slot name="close">x</slot>
+			<b>Bacon Ipsum</b>
+			<slot name="content">No Content</slot>
+		</div>
 	</template>
 	<button type="button" popovertarget="bacon" popovertargetaction="hide" slot="close">
 		${icon}
