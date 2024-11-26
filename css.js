@@ -37,13 +37,24 @@ export function createStyleSheet(cssRules, { media, disabled, baseURL } = {}) {
 		baseURL
 	});
 
-	sheet.replace(cssRules).catch(console.error);
+	sheet.replace(cssRules).catch(reportError);
 	return sheet;
 }
 
-export const createCSSParser = ({ media, disabled, baseURL } = {}) => (strings, ...args) => {
-	return createStyleSheet(String.raw(strings, ...args.map(stringify)).trim(), { media, disabled, baseURL });
-};
+export function createStyleSheetSync(cssRules, { media, disabled, baseURL } = {}) {
+	const sheet = new CSSStyleSheet({
+		media: media instanceof MediaQueryList ? media.media : media,
+		disabled,
+		baseURL
+	});
+
+	sheet.replaceSync(cssRules);
+	return sheet;
+}
+
+export const createCSSParser = ({ media, disabled, baseURL, sync = false } = {}) => sync
+	? (strings, ...args) => createStyleSheetSync(String.raw(strings, ...args.map(stringify)).trim(), { media, disabled, baseURL })
+	: (strings, ...args) => createStyleSheet(String.raw(strings, ...args.map(stringify)).trim(), { media, disabled, baseURL });
 
 export const css = createCSSParser();
 

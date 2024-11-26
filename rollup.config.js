@@ -9,7 +9,7 @@ export default [{
 		'@aegisjsproject/sanitizer/config/mathml.js',
 		'@aegisjsproject/sanitizer/config/base.js',
 		'@aegisjsproject/sanitizer/namespaces.js',
-		'@aegisjsproject/url/url.js',
+		'@aegisjsproject/url/parser.js',
 	],
 	output: {
 		file: 'parsers.cjs',

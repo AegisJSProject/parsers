@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.0.16] - 2024-11-26
+
+### Changed
+- Update `@aegisjsproject/url`
+- Add `sync` option when creating CSS parsers (controls use of `sheet.replace` vs `sheet.replaceSync`)
+
 ## [v0.0.15] - 2024-11-09
 
 ### Added
