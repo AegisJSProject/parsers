@@ -1,6 +1,6 @@
 {
   "name": "@aegisjsproject/parsers",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "A collection of secure & minimal parsers for HTML, CSS, SVG, MathML, XML, and JSON",
   "keywords": [
     "aegis",
@@ -78,7 +78,7 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/./issues"
+    "url": "https://github.com/AegisJSProject/parsers/issues"
   },
   "homepage": "https://github.com/AegisJSProject/parsers#readme",
   "devDependencies": {
@@ -91,6 +91,6 @@
   },
   "dependencies": {
     "@aegisjsproject/sanitizer": "^0.1.3",
-    "@aegisjsproject/url": "^1.0.0"
+    "@aegisjsproject/url": "^1.0.1"
   }
 }
