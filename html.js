@@ -5,7 +5,7 @@ export function createHTMLParser(config = sanitizer, { mapper = stringify } = {}
 	return (strings, ...values) => {
 		const frag = document.createDocumentFragment();
 		const tmp = document.createElement('div');
-		tmp.setHTML(String.raw(strings, ...values.map(mapper)).trim(), config);
+		tmp.setHTML(String.raw(strings, ...values.map(mapper)).trim(), { sanitizer:  config });
 		frag.append(...tmp.childNodes);
 		return frag;
 	};
@@ -24,7 +24,7 @@ export function htmlUnsafe(strings, ...values) {
 export const el = (...args) => html.apply(null, args).firstElementChild;
 
 export function doc(strings, ...values) {
-	return Document.parseHTML(String.raw(strings, ...values.map(stringify)), sanitizer);
+	return Document.parseHTML(String.raw(strings, ...values.map(stringify)), { sanitizer });
 }
 
 export function docUnsafe(strings, ...values) {
