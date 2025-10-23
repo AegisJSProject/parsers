@@ -14,7 +14,7 @@ const bg = new Blob([`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10
 
 document.adoptedStyleSheets = [css`:root {
 	font-family: system-ui;
-	}
+}
 
 body {
 	background-image: url(${bg});
