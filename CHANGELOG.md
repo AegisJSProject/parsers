@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.1.4] - 2025-12-23
+
+### Changed
+- Update `@aegisjsproject/sanitizer`
+
 ## [v0.1.3] - 2025-12-16
 
 ### Changed
