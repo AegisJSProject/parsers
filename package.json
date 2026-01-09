@@ -1,6 +1,6 @@
 {
   "name": "@aegisjsproject/parsers",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A collection of secure & minimal parsers for HTML, CSS, SVG, MathML, XML, and JSON",
   "keywords": [
     "aegis",
@@ -47,7 +47,7 @@
   },
   "scripts": {
     "test": "npm run lint:js && npm run build",
-    "start": "http-server ${npm_package_config_serve_path} -c-1 --port ${npm_package_config_serve_port} --gzip true --brotli true -a ${npm_package_config_serve_domain} -o /test/",
+    "start": "npx @shgysk8zer0/http-server -c ./http.config.js",
     "preversion": "npm test",
     "prepare": "npm run build",
     "lint:js": "eslint .",
@@ -82,11 +82,14 @@
   },
   "homepage": "https://github.com/AegisJSProject/parsers#readme",
   "devDependencies": {
+    "@aegisjsproject/dev-server": "^1.0.5",
+    "@aegisjsproject/http-utils": "^1.0.4",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@shgysk8zer0/eslint-config": "^1.0.1",
+    "@shgysk8zer0/http-server": "^1.1.1",
+    "@shgysk8zer0/importmap": "^1.7.5",
     "eslint": "^9.0.0",
-    "http-server": "^14.1.1",
     "rollup": "^4.13.1"
   },
   "dependencies": {

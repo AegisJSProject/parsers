@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.1.5] - 2026-01-09
+
+### Changed
+- Use `<template>` in `html` for better performance & security
+- Switch to using `@shgysk8zer0/http-server` for testing for better compatibility
+
 ## [v0.1.4] - 2025-12-23
 
 ### Changed
