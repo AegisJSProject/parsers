@@ -1,5 +1,6 @@
 node_modules/
 test/
+index.html
 .github/
 .editorconfig
 .eslintignore
