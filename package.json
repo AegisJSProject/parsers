@@ -89,7 +89,7 @@
     "@shgysk8zer0/eslint-config": "^1.0.1",
     "@shgysk8zer0/http-server": "^1.1.1",
     "@shgysk8zer0/importmap": "^1.7.5",
-    "eslint": "^9.0.0",
+    "eslint": "^10.0.0",
     "rollup": "^4.13.1"
   },
   "dependencies": {
