@@ -1,5 +1,7 @@
-import { sanitizer } from '@aegisjsproject/sanitizer/config/base.js';
+import { elements, attributes } from '@aegisjsproject/sanitizer/config/base.js';
 import { stringify } from './utils.js';
+
+const sanitizer = { elements, attributes, dataAttributes: true, comments: true };
 
 const raw = (strings, values, mapper = stringify) => String.raw(strings, ...values.map(mapper)).trim();
 
