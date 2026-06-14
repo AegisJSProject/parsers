@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.2.0] - 2026-06-04
+
+### Added
+- Add optional `@layer` when creating stylesheets/CSS parsers
+- Add Security policy
+- Add npm config to harden installs
+
+### Changed
+- Update Workflows with permissions
+- Update contributiing guidelines
+- Update to node 26.3.0 & npm 11.16.0
+
 ## [v0.1.6] - 2026-03-13
 
 ### Changed

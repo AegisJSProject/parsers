@@ -5,6 +5,9 @@
 # or to provide custom queries or build logic.
 name: "CodeQL"
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [master]
@@ -20,8 +23,9 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      # required for all workflows
-      security-events: write
+      actions: read          # Required for CodeQL to look at repository status
+      contents: read         # Required for actions/checkout to clone the code
+      security-events: write # Required to upload the security scan results to GitHub
 
     strategy:
       fail-fast: false
@@ -51,7 +55,7 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file. 
+        # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 

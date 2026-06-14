@@ -6,6 +6,9 @@
 ###########################
 name: Lint Code Base
 
+permissions:
+  contents: read
+
 #
 # Documentation:
 # https://help.github.com/en/articles/workflow-syntax-for-github-actions
@@ -34,10 +37,6 @@ on:
 ###############
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      # matrix:
-      #   language:
     # Name the Job
     name: Lint Code Base
     # Set the agent to run on

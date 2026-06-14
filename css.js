@@ -30,33 +30,41 @@ const stringify = thing => {
 	}
 };
 
-export function createStyleSheet(cssRules, { media, disabled, baseURL } = {}) {
+export function createStyleSheet(cssRules, { media, disabled, baseURL, layer } = {}) {
 	const sheet = new CSSStyleSheet({
 		media: media instanceof MediaQueryList ? media.media : media,
 		disabled,
 		baseURL
 	});
 
-	sheet.replace(cssRules).catch(reportError);
+	if (typeof layer === 'string') {
+		sheet.replace(`@layer ${layer} {${cssRules}}`).catch(reportError);
+	} else {
+		sheet.replace(cssRules).catch(reportError);
+	}
+
 	return sheet;
 }
 
-export function createStyleSheetSync(cssRules, { media, disabled, baseURL } = {}) {
+export function createStyleSheetSync(cssRules, { media, disabled, baseURL, layer } = {}) {
 	const sheet = new CSSStyleSheet({
 		media: media instanceof MediaQueryList ? media.media : media,
 		disabled,
 		baseURL
 	});
 
-	sheet.replaceSync(cssRules);
+	if (typeof layer === 'string') {
+		sheet.replaceSync(`@layer ${layer} {${cssRules}}`);
+	} else {
+		sheet.replaceSync(cssRules);
+	}
+
 	return sheet;
 }
 
-export const createCSSParser = ({ media, disabled, baseURL, sync = false } = {}) => sync
-	? (strings, ...args) => createStyleSheetSync(String.raw(strings, ...args.map(stringify)).trim(), { media, disabled, baseURL })
-	: (strings, ...args) => createStyleSheet(String.raw(strings, ...args.map(stringify)).trim(), { media, disabled, baseURL });
-
-export const css = createCSSParser();
+export const createCSSParser = ({ media, disabled, baseURL, layer, sync = false } = {}) => sync
+	? (strings, ...args) => createStyleSheetSync(String.raw(strings, ...args.map(stringify)).trim(), { media, disabled, baseURL, layer })
+	: (strings, ...args) => createStyleSheet(String.raw(strings, ...args.map(stringify)).trim(), { media, disabled, baseURL, layer });
 
 export function styleSheetToLink(sheet, { crossOrigin = 'anonymous', referrerPolicy = 'no-referrer' } = {}) {
 	const link = document.createElement('link');
@@ -90,3 +98,5 @@ export function addStyleSheets(node, ...styles) {
 		throw new TypeError('Node must be a `HTMLDocument` or `ShadowRoot`.');
 	}
 }
+
+export const css = createCSSParser();

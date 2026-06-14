@@ -26,7 +26,7 @@ A collection of secure & minimal parsers for HTML, CSS, SVG, MathML, XML, and JS
 
 - [Code of Conduct](./.github/CODE_OF_CONDUCT.md)
 - [Contributing](./.github/CONTRIBUTING.md)
-<!-- - [Security Policy](./.github/SECURITY.md) -->
+- [Security Policy](./.github/SECURITY.md)
 
 ## Benefits
 
