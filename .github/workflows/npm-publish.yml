@@ -1,5 +1,7 @@
 ---
 name: Create and publish a packages to npm
+permissions:
+  contents: read
 on:
   push:
     # Sequence of patterns matched against refs/tags
@@ -25,11 +27,11 @@ jobs:
           cache: npm
           registry-url: https://registry.npmjs.org
       - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+        run: npm ci --no-audit --no-fund --strict-allow-scripts
       - name: Run tests
         run: npm test
       - name: Build Package
         run: npm run build --if-present
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm stage publish --provenance --access public
 

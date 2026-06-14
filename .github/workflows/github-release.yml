@@ -6,6 +6,8 @@ on:
       - 'v*'
 
 name: Create GitHub Release
+permissions:
+  contents: write
 
 jobs:
   build:
